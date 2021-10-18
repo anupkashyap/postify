@@ -1,25 +1,55 @@
-import logo from './logo.svg';
+import { Button, IconButton, Modal, TextField, Typography } from '@mui/material';
+import { Box } from '@mui/system';
 import './App.css';
+import Feed from './Components/Feed';
+import Header from './Components/Header';
+import CloseIcon from '@mui/icons-material/Close';
+import React, { useState } from 'react';
+import NewPost from './Components/NewPost';
+const handleClose = () => { };
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+export default class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      newPostModalOpen: false,
+      feedData: [{"postTitle":"AAAA","comments":[]}]
+    }
+    
+  }
+  componentDidMount(){
+    this.fetchData();
+  }
+  fetchData=()=> {
+    fetch("https://severless-socialmedia.anupkashyap.workers.dev/posts", {
+      "method": "GET",
+      "Referrer-Policy": "no-referrer"
+    })
+      .then(response => response.json())
+      .then(json => {
+        this.setFeedData(json.sort((a,b)=>{
+          return new Date(a.timeStamp) -new Date(b.timeStamp);
+        }));
+      })
+      .catch(err => console.log(err));
+  }
+  openNewPostDialog = () => this.setState({ ...this.state, newPostModalOpen: true });
+  closeNewPostDialog = () => this.setState({ ...this.state, newPostModalOpen: false });
+  setFeedData = (data) => this.setState({ ...this.state, feedData: data },()=>console.log(this.state));
+  render() {
+    return (
+      <div className="App">
+        <Header openNewPostDialog={this.openNewPostDialog} />
+        <Feed data={this.state.feedData} />
+        <Modal
+          open={this.state.newPostModalOpen}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+          <NewPost closeNewPostDialog={this.closeNewPostDialog} reload={this.fetchData}/>
+        </Modal>
+      </div>
+    );
+  }
 }
-
-export default App;

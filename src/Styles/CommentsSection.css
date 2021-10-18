@@ -1,0 +1,39 @@
+.commentsSection{
+    display: flex;
+}
+.commentsSection__comment{
+    border-width: 2%;
+    border-color: black;
+}
+.commentsSection__author{
+    display: flex;
+    align-items: center;
+    font-size: small;
+    padding: 1%;
+}
+.commentsSection__author__avatar{
+    width: 20px!important;
+    height: 20px!important;
+    font-size: small!important;
+    margin: 2.5%;
+}
+.commentsSection__commentText{
+    text-align: left;
+    padding-top: 1%;
+    padding-bottom: 1%;
+    white-space: pre-wrap;
+    font-family: Arial, Helvetica, sans-serif;
+    padding-left: 10%;
+    width: max-content;
+    font-size: 0.9rem;
+}
+.commentsSection__offset{
+    width: 2%;
+    background-color:orange;
+}
+.commentsSection__commentInput{
+    padding-left: 8%!important;
+    display: flex;
+    justify-content: space-between;
+    width: max-content;
+}
