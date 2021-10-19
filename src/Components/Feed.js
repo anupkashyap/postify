@@ -9,10 +9,6 @@ export default class Feed extends React.Component {
         this.state={data:props.data}
         console.log("Feed Component Constructor")
         console.log(props.data);
-        this.setState({data:[{"propsTitle":"AAAA"}]},()=>{
-            console.log("State changed");
-            console.log(this.state);
-        })
     }
 
     componentWillReceiveProps(props){

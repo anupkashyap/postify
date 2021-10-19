@@ -2,6 +2,7 @@ import { Button, IconButton, Modal, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from 'react';
+import { PinDropSharp } from '@mui/icons-material';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -15,9 +16,12 @@ const style = {
 const NewPost = (props) => {
     const [postTitle, setPostTitle] = useState("");
     const [postContent, setPostContent] = useState("");
+    const [postAuthor, setPostAuthor] = useState("Anonymous");
     const onPostTitleChange = (event) => setPostTitle(event.target.value);
     const onPostContentChange = (event) => setPostContent(event.target.value);
+    const onPostAuthorChange = (event) => setPostAuthor(event.target.value);
     const submitPost = () => {
+        console.log("current user is "+props.currentUser);
         fetch("https://severless-socialmedia.anupkashyap.workers.dev/posts", {
             "method": "POST",
             "headers": {
@@ -28,7 +32,7 @@ const NewPost = (props) => {
                 "id": 1,
                 "title": postTitle,
                 "postBody":postContent,
-                "author": "Anonymous",
+                "author": postAuthor,
                 "timestamp": Date.now(),
                 "isLiked": false,
                 "isDisliked": false,
@@ -79,6 +83,15 @@ const NewPost = (props) => {
                     onChange={(event) => onPostContentChange(event)}
                     style={{ "width": "100%", height: "30vh" }}
                 />
+                <div>
+                    <TextField
+                        id="outlined-multiline-flexible"
+                        placeholder={"Post as"}
+                        size="small"
+                        onChange={(event) => onPostAuthorChange(event)}
+                        style={{ "width": "100%" }}
+                    />
+                </div>
                 <Button
                     style={{ "float": "right" }}
                     onClick={submitPost}>

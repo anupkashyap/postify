@@ -1,19 +1,18 @@
-import { Button, IconButton, Modal, TextField, Typography } from '@mui/material';
-import { Box } from '@mui/system';
+import { Modal} from '@mui/material';
 import './App.css';
 import Feed from './Components/Feed';
 import Header from './Components/Header';
-import CloseIcon from '@mui/icons-material/Close';
-import React, { useState } from 'react';
+import React from 'react';
 import NewPost from './Components/NewPost';
-const handleClose = () => { };
+import Login from './Components/Login'; 
 
 export default class App extends React.Component {
   constructor() {
     super();
     this.state = {
       newPostModalOpen: false,
-      feedData: [{"postTitle":"AAAA","comments":[]}]
+      loginDialogOpen:false,
+      feedData: []
     }
     
   }
@@ -36,19 +35,18 @@ export default class App extends React.Component {
   openNewPostDialog = () => this.setState({ ...this.state, newPostModalOpen: true });
   closeNewPostDialog = () => this.setState({ ...this.state, newPostModalOpen: false });
   setFeedData = (data) => this.setState({ ...this.state, feedData: data },()=>console.log(this.state));
+  
   render() {
     return (
       <div className="App">
-        <Header openNewPostDialog={this.openNewPostDialog} />
+        <Header openNewPostDialog={this.openNewPostDialog} openLoginDialog={this.openLoginDialog}/>
         <Feed data={this.state.feedData} />
         <Modal
           open={this.state.newPostModalOpen}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
         >
-          <NewPost closeNewPostDialog={this.closeNewPostDialog} reload={this.fetchData}/>
+          <NewPost currentUser={this.state.currentUser} closeNewPostDialog={this.closeNewPostDialog} reload={this.fetchData}/>
         </Modal>
+        
       </div>
     );
   }
