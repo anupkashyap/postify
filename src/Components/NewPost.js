@@ -1,9 +1,19 @@
-import { Button, IconButton, TextField, Typography } from '@mui/material';
+import { Button, IconButton, Modal, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from 'react';
+import { PinDropSharp } from '@mui/icons-material';
 import { v4 as uuidv4 } from 'uuid';
-import Config from './../Config';
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'white',
+    boxShadow: 24,
+    p: 2,
+};
 const NewPost = (props) => {
     const [postTitle, setPostTitle] = useState("");
     const [postContent, setPostContent] = useState("");
@@ -12,7 +22,8 @@ const NewPost = (props) => {
     const onPostContentChange = (event) => setPostContent(event.target.value);
     const onPostAuthorChange = (event) => setPostAuthor(event.target.value);
     const submitPost = () => {
-        fetch(Config.api, {
+        console.log("current user is "+props.currentUser);
+        fetch("https://severless-socialmedia.anupkashyap.workers.dev/posts", {
             "method": "POST",
             "headers": {
                 "content-type": "application/json"
@@ -35,14 +46,17 @@ const NewPost = (props) => {
                 props.closeNewPostDialog();
                 props.reload();
             }
+            else{
+                //Error Toast
+            }
         });
     }
 
     return (
 
         <div>
-            <Box className="newPost__box">
-                <div className="newPost__container">
+            <Box sx={style}>
+                <div style={{ "display": "flex", "justifyContent": "space-between", "alignItems": "center" }}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
                         New Post
                     </Typography>

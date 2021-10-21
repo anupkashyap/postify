@@ -16,10 +16,7 @@ export default class Feed extends React.Component {
     render() {
         return (
             <div>
-                {this.state.data.length == 0 ?
-                    (
-                        <h2>No posts!</h2>
-                    ) : ''}
+                
                 {this.state.data.map(post =>
                     <div>
                         <Post post={post} reload={this.props.reload} filterByAuthor={this.props.filterByAuthor} key={post.id} />
