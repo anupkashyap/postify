@@ -6,12 +6,10 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { deepOrange } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
-import CommentsSection from './CommentsSection';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { Button } from '@mui/material';
-import { render } from '@testing-library/react';
 
 
 export default class Post extends React.Component {
@@ -107,10 +105,7 @@ export default class Post extends React.Component {
 
                     </div>
                     <hr />
-                    {/* <div className="post__commentsSection">
-                            <CommentsSection comments={props.post.comments}/>
-
-                </div> */}
+                   
                 </div>
 
             </div>
