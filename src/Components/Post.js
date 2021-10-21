@@ -100,8 +100,7 @@ export default class Post extends React.Component {
 
                         </div>
                         <div className="post__footer__comments">
-                            <a href="#">Comments ({this.props.post.comments.length})</a>
-                            <IconButton onClick={() => this.confirmAlert(this.confirmDeleteOptions)}>
+                            <IconButton onClick={() => confirmAlert(this.confirmDeleteOptions)}>
                                 <DeleteIcon />
                             </IconButton>
                         </div>
