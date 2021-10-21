@@ -7,56 +7,115 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { deepOrange } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import CommentsSection from './CommentsSection';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import { Button } from '@mui/material';
+import { render } from '@testing-library/react';
 
-const Post = (props) => {
-    return (
-        <div className="post">
-            <div className="post__container">
-                <div className="post__header">
-                    <h3>{props.post.title}</h3>
-                </div>
-                <div className="post__author">
-                    <Avatar sx={{ bgcolor: deepOrange[500] }} className="post__author__avatar"></Avatar>
-                    <p>{props.post.author}</p>
-                </div>
 
-                <div className="post__content">
-                    <p>
-                        {props.post.postBody}
+export default class Post extends React.Component {
 
-                    </p>
-                </div>
+    constructor() {
+        super();
+        this.state = {
+            isLiked: false,
+            isDisliked: false
+        }
+    }
+    onLikeClick=()=>{
+        this.setState({...this.state,isLiked:!this.state.isLiked})
+    }
+    onDislikeClick=()=>{
+        this.setState({...this.state,isDisliked:!this.state.isDisliked})
+    }
+    confirmDeleteOptions = {
+        title: 'Delete post',
+        message: 'Are you sure you want to delete the post?',
+        buttons: [
+            {
+                label: 'Yes',
+                onClick: () => this.deletePost()
+            },
+            {
+                label: 'No',
+            }
+        ],
+        overlayClassName: "overlay-custom-class-name"
+    };
 
-                <div className="post__footer">
-                    <div className="post__footer__reactionGroup">
-                        <IconButton>
-                            {props.post.isLiked?
-                            (<ThumbUpIcon className="post__color__blue" />):
-                            (<ThumbUpIcon className="" />)}
-                            
-                        </IconButton>
-                        <IconButton>
-                        {props.post.isDisliked?
-                            (<ThumbDownIcon className="post__color__red" />):
-                            (<ThumbDownIcon className="" />)}
-                        </IconButton>
-
+    deletePost = () => {
+        fetch("https://severless-socialmedia.anupkashyap.workers.dev/posts", {
+            "method": "DELETE",
+            "headers": {
+                "content-type": "application/json"
+            },
+            "body": "{\"id\":\"" + this.props.post.id + "\"}"
+        })
+            .then(response => {
+                if (response.ok) {
+                    this.props.reload();
+                }
+                else {
+                    //Error Toast
+                }
+            });
+    }
+    render() {
+        return (
+            <div className="post">
+                <div className="post__container">
+                    <div className="post__header">
+                        <h3>{this.props.post.title}</h3>
+                    </div>
+                    <div className="post__author">
+                        <Avatar sx={{ bgcolor: deepOrange[500] }} className="post__author__avatar"></Avatar>
+                        <Button onClick={() => this.props.filterByAuthor(this.props.post.author)}>
+                            <p>{this.props.post.author}</p>
+                        </Button>
 
                     </div>
-                    <div className="post__footer__comments">
-                        <a href="#">Comments ({props.post.comments.length})</a>
+
+                    <div className="post__content">
+                        <p>
+                            {this.props.post.postBody}
+
+                        </p>
                     </div>
 
-                </div>
-                <hr />
-                {/* <div className="post__commentsSection">
+                    <div className="post__footer">
+                        <div className="post__footer__reactionGroup">
+                            <IconButton onClick={this.onLikeClick}>
+                                {this.state.isLiked ?
+                                    (<ThumbUpIcon className="post__color__blue" />) :
+                                    (<ThumbUpIcon className="" />)}
+
+                            </IconButton>
+                            <IconButton onClick={this.onDislikeClick}>
+                                {this.state.isDisliked ?
+                                    (<ThumbDownIcon className="post__color__red" />) :
+                                    (<ThumbDownIcon className="" />)}
+                            </IconButton>
+
+
+                        </div>
+                        <div className="post__footer__comments">
+                            <a href="#">Comments ({this.props.post.comments.length})</a>
+                            <IconButton onClick={() => this.confirmAlert(this.confirmDeleteOptions)}>
+                                <DeleteIcon />
+                            </IconButton>
+                        </div>
+
+                    </div>
+                    <hr />
+                    {/* <div className="post__commentsSection">
                             <CommentsSection comments={props.post.comments}/>
 
                 </div> */}
+                </div>
+
             </div>
+        );
+    };
 
-        </div>
-    );
-};
-
-export default Post;
+}

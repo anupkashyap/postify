@@ -3,6 +3,7 @@ import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from 'react';
 import { PinDropSharp } from '@mui/icons-material';
+import { v4 as uuidv4 } from 'uuid';
 const style = {
     position: 'absolute',
     top: '50%',
@@ -29,7 +30,7 @@ const NewPost = (props) => {
             },
             "body": JSON.stringify({
 
-                "id": 1,
+                "id": uuidv4(),
                 "title": postTitle,
                 "postBody":postContent,
                 "author": postAuthor,

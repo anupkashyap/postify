@@ -1,6 +1,6 @@
 import { ThermostatOutlined } from '@mui/icons-material';
-import React from 'react';
-import Post from './Post';
+import React, { Suspense, lazy } from 'react';
+const Post= lazy(()=> import('./Post'));
 
 export default class Feed extends React.Component {
     constructor(props){
@@ -63,12 +63,19 @@ export default class Feed extends React.Component {
         // ];
         return (
             <div>
+                {this.state.data.length==0?
+                (
+                    <h2>No posts!</h2>
+                ):''}
 
                 {console.log(this.state)}
                 {this.state.data.map(post =>
-                    <div>
-                        <Post post={post} />
+                <Suspense fallback={<h1>Loading...</h1>}>
+                     <div>
+                        <Post post={post} reload={this.props.reload} filterByAuthor={this.props.filterByAuthor} likePost={this.props.likePost} dislikePost={this.props.dislikePost}/>
                     </div>
+                </Suspense>
+                   
 
                 )}
             </div>
