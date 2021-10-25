@@ -1,5 +1,5 @@
 const Config={
-    "api":"https://severless-socialmedia.anupkashyap.workers.dev/posts"
+    "api":"http://postify.anupkashyap.workers.dev/posts"
 }
 
 export default Config;
