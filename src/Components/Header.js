@@ -2,7 +2,6 @@ import './../Styles/Header.css';
 import React from 'react';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import { IconButton, Typography } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
 
 const Header = (props) => {
     return (

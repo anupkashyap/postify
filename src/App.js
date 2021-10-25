@@ -1,9 +1,10 @@
-import { Alert, Button, Modal } from '@mui/material';
+import { Alert, Button, IconButton, Modal } from '@mui/material';
 import './App.css';
 import Feed from './Components/Feed';
 import Header from './Components/Header';
 import React from 'react';
 import NewPost from './Components/NewPost';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import Config from './Config';
 
 export default class App extends React.Component {
@@ -40,7 +41,7 @@ export default class App extends React.Component {
   closeNewPostDialog = () => this.setState({ ...this.state, newPostModalOpen: false });
   setFeedData = (data) => this.setState({ ...this.state, feedData: data, unFilteredData: data }, () => console.log(this.state));
   filterByAuthor = (author) => {
-    var filteredPosts = this.state.feedData.filter(x => x.author == author);
+    var filteredPosts = this.state.feedData.filter(x => x.author === author);
     this.setState({ ...this.state, feedData: filteredPosts, isFiltered: true, filteredAuthor: author });
   }
 
@@ -67,6 +68,13 @@ export default class App extends React.Component {
         </div>
         {/* Post Feed */}
         <Feed data={this.state.feedData} reload={this.fetchData} filterByAuthor={this.filterByAuthor} />
+        <div style={{ "display": "flex", "justifyContent": "space-around" }}>
+          <IconButton onClick={() => window.open("https://github.com/anupkashyap/postify")} >
+            <GitHubIcon />
+
+              </IconButton>
+        
+        </div>
         <Modal open={this.state.newPostModalOpen}>
           <NewPost currentUser={this.state.currentUser} closeNewPostDialog={this.closeNewPostDialog} reload={this.fetchData} />
         </Modal>

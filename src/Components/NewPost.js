@@ -1,8 +1,7 @@
-import { Button, IconButton, Modal, TextField, Typography } from '@mui/material';
+import { Button, IconButton, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useState } from 'react';
-import { PinDropSharp } from '@mui/icons-material';
 import { v4 as uuidv4 } from 'uuid';
 const style = {
     position: 'absolute',
@@ -18,11 +17,26 @@ const NewPost = (props) => {
     const [postTitle, setPostTitle] = useState("");
     const [postContent, setPostContent] = useState("");
     const [postAuthor, setPostAuthor] = useState("Anonymous");
-    const onPostTitleChange = (event) => setPostTitle(event.target.value);
-    const onPostContentChange = (event) => setPostContent(event.target.value);
+    const[isPostEnabled,setIsPostEnabled]=useState(false);
+    const onPostTitleChange = (event) => {
+        setPostTitle(event.target.value);
+        reviewPostButton();
+    }
+    const onPostContentChange = (event) => {
+        setPostContent(event.target.value);
+        reviewPostButton();
+    }
     const onPostAuthorChange = (event) => setPostAuthor(event.target.value);
+    const reviewPostButton=()=>{
+        if(postTitle==="" || postContent===""){
+            setIsPostEnabled(false);
+        }
+        else{
+            setIsPostEnabled(true);
+        }
+    }
     const submitPost = () => {
-        console.log("current user is "+props.currentUser);
+        console.log("current user is " + props.currentUser);
         fetch("https://severless-socialmedia.anupkashyap.workers.dev/posts", {
             "method": "POST",
             "headers": {
@@ -32,7 +46,7 @@ const NewPost = (props) => {
 
                 "id": uuidv4(),
                 "title": postTitle,
-                "postBody":postContent,
+                "postBody": postContent,
                 "author": postAuthor,
                 "timestamp": Date.now(),
                 "isLiked": false,
@@ -41,15 +55,15 @@ const NewPost = (props) => {
 
             })
         })
-        .then(response=>{
-            if(response.ok){
-                props.closeNewPostDialog();
-                props.reload();
-            }
-            else{
-                //Error Toast
-            }
-        });
+            .then(response => {
+                if (response.ok) {
+                    props.closeNewPostDialog();
+                    props.reload();
+                }
+                else {
+                    //Error Toast
+                }
+            });
     }
 
     return (
@@ -66,8 +80,9 @@ const NewPost = (props) => {
 
                 </div>
 
-                <div>
+                <div className="newPost__inputField">
                     <TextField
+
                         id="outlined-multiline-flexible"
                         placeholder={"Title"}
                         size="small"
@@ -75,17 +90,21 @@ const NewPost = (props) => {
                         style={{ "width": "100%" }}
                     />
                 </div>
-
-                <TextField
-                    id="outlined-multiline-flexible"
-                    multiline
-                    rows={8}
-                    size="large"
-                    onChange={(event) => onPostContentChange(event)}
-                    style={{ "width": "100%", height: "30vh" }}
-                />
-                <div>
+                <div className="newPost__inputField">
                     <TextField
+                        id="outlined-multiline-flexible"
+                        className="newPost__inputField"
+                        multiline
+                        rows={8}
+                        size="large"
+                        onChange={(event) => onPostContentChange(event)}
+                        style={{ "width": "100%", height: "14rem" }}
+                    />
+                </div>
+
+                <div className="newPost__inputField">
+                    <TextField
+                        className="newPost__inputField"
                         id="outlined-multiline-flexible"
                         placeholder={"Post as"}
                         size="small"
@@ -95,6 +114,7 @@ const NewPost = (props) => {
                 </div>
                 <Button
                     style={{ "float": "right" }}
+                    disabled={!isPostEnabled}
                     onClick={submitPost}>
                     Post!
                 </Button>
